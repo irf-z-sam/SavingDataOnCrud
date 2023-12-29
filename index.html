@@ -28,7 +28,7 @@ function saveToLocalStorage(event){
         email,
         phonenumber
     }
-axios.post("https://crudcrud.com/api/2ecaf458bbd94ec9878f267a9b94df4/appointmentData",obj).then((response)=>{
+axios.post("https://crudcrud.com/api/2ecaf458bbd94ec9878f267a9b94df4d/appointmentData",obj).then((response)=>{
 console.log(response);
 })
 .catch((err)=>{
@@ -54,6 +54,7 @@ window.addEventListener('DOMContentLoaded',()=>{
     .catch((error)=>{
       console.log(error);  
     })
+
 const localStorageObj = localStorage;
 const localStoragekeys = Object.keys(localStorageObj);
 
@@ -75,9 +76,9 @@ document.getElementById('phonenumber').value='';
         removeUserFromScreen(user.email);
     }
 const parentNode = document.getElementById("ListOfUser");
-const childHTML=`<li id='${user.email}'> ${user.name} - ${user.email} - ${user.phonenumber} 
-    <button onclick=deleteUser("${user.email}")> Delete User</button>
-    <button onclick=editUserDetails("${user.email}",'${user.email}','${user.name}','${user.phonenumber}')> Edit User</button>
+const childHTML=`<li id='${user._id}'> ${user.name} - ${user.email} - ${user.phonenumber} 
+    <button onclick=deleteUser("${user._id}")> Delete User</button>
+    <button onclick=editUserDetails('${user.email}','${user.name}','${user.phonenumber}','${user._id}')> Edit User</button>
     </li>`
 //console.log(childHTML);
 parentNode.innerHTML=parentNode.innerHTML + childHTML; 
@@ -91,14 +92,24 @@ function deleteUser(emailId){
 }
 
 //Edit User
-function editUserDetails(emailId,name,phonenumber){
+function editUserDetails(emailId, name, phonenumber, userId){
 document.getElementById('email').value=emailId;
 document.getElementById('username').value=name;
 document.getElementById('phonenumber').value=phonenumber;
-deleteUser(emailId);
+deleteUser(userId);
 
 }
 
+//DeleteUserFrom_CRUD
+function deleteUser(userId){
+axios.delete("https://crudcrud.com/api/2ecaf458bbd94ec9878f267a9b94df4d/appointmentData")
+.then((response)=>{
+    removeUserFromScreen(userId)
+})
+.catch((err)=>{
+    console.log(err);
+})
+}
 
 function removeUserFromScreen(emailId){
     const parentNode = document.getElementById("ListOfUser")
